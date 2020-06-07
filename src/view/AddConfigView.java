@@ -8,6 +8,7 @@ package view;
 import DAO.ConfigControl;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import model.Config;
@@ -43,6 +44,54 @@ public class AddConfigView extends javax.swing.JFrame {
         initComponents();
     }
     
+    boolean checkInput() {
+        JPanel panel = (JPanel) getContentPane();
+        String tuoi = jTextField1.getText().trim();
+        String qlDungTuyen1 = jTextField2.getText().trim();
+        String qlDungTuyen2 = jTextField3.getText().trim();
+        String qlDungTuyen3 = jTextField4.getText().trim();
+        String traiTuyenTuyenHuyen = jTextField5.getText().trim();
+        String traiTuyenTuyenTinh = jTextField6.getText().trim();
+        String traiTuyenTuyenTrungUong = jTextField7.getText().trim();
+        if(tuoi.equals("") || qlDungTuyen1.equals("") || qlDungTuyen2.equals("") || qlDungTuyen3.equals("")
+                || traiTuyenTuyenHuyen.equals("") || traiTuyenTuyenTinh.equals("") || traiTuyenTuyenTrungUong.equals("")) {
+            JOptionPane.showMessageDialog(
+                    panel, 
+                    "Vui lòng điền đầy đủ thông tin!", 
+                    "Thông báo", 
+                    JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        } else if(!isNumeric(tuoi) || !isNumeric(qlDungTuyen1)|| !isNumeric(qlDungTuyen2)|| !isNumeric(qlDungTuyen3)
+                || !isNumeric(traiTuyenTuyenHuyen) || !isNumeric(traiTuyenTuyenTinh) || !isNumeric(traiTuyenTuyenTrungUong)) {
+            JOptionPane.showMessageDialog(
+                    panel, 
+                    "Định dạng không đúng, vui lòng kiểm tra lại!", 
+                    "Thông báo", 
+                    JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        } else if(Integer.parseInt(tuoi) < 0 || Integer.parseInt(tuoi) > 18) {
+            JOptionPane.showMessageDialog(
+                    panel, 
+                    "Tuổi miễn giảm 100% phải nằm trong khoảng từ 0 - 18 tuổi!", 
+                    "Thông báo", 
+                    JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        } else if (Double.parseDouble(qlDungTuyen1) < 0 || Double.parseDouble(qlDungTuyen1) > 100
+                || Double.parseDouble(qlDungTuyen2) < 0 || Double.parseDouble(qlDungTuyen2) > 100
+                || Double.parseDouble(qlDungTuyen3) < 0 || Double.parseDouble(qlDungTuyen3) > 100
+                || Double.parseDouble(traiTuyenTuyenHuyen) < 0 || Double.parseDouble(traiTuyenTuyenHuyen) > 100
+                || Double.parseDouble(traiTuyenTuyenTinh) < 0 || Double.parseDouble(traiTuyenTuyenTinh) > 100
+                || Double.parseDouble(traiTuyenTuyenTrungUong) < 0 || Double.parseDouble(traiTuyenTuyenTrungUong) > 100) {
+            JOptionPane.showMessageDialog(
+                    panel, 
+                    "Giá trị phải nằm trong khoảng từ 0 - 100%!", 
+                    "Thông báo", 
+                    JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+    
     void getInput() {
         tuoi = Integer.parseInt(jTextField1.getText());
         qlDungTuyen1 = Double.parseDouble(jTextField2.getText());
@@ -53,7 +102,15 @@ public class AddConfigView extends javax.swing.JFrame {
         traiTuyenTuyenTrungUong = Double.parseDouble(jTextField7.getText());
     }
     
-
+    private Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
+ 
+    public boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false; 
+        }
+        return pattern.matcher(strNum).matches();
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -156,22 +213,20 @@ public class AddConfigView extends javax.swing.JFrame {
                                 .addComponent(jLabel5)
                                 .addGap(136, 136, 136)
                                 .addComponent(jTextField4))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel7))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                                    .addComponent(jTextField5)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addGap(111, 111, 111)
-                                .addComponent(jTextField7))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addGap(136, 136, 136)
-                                .addComponent(jTextField3)))))
+                                .addComponent(jTextField3))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel8))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                                    .addComponent(jTextField6)
+                                    .addComponent(jTextField5))))))
                 .addGap(276, 276, 276))
             .addGroup(layout.createSequentialGroup()
                 .addGap(76, 76, 76)
@@ -243,6 +298,7 @@ public class AddConfigView extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        if(!checkInput()) return;
         getInput();
         
         JPanel panel = (JPanel) getContentPane();

@@ -72,10 +72,10 @@ public class UserControl {
                 user.setBhytRegisterPlace(rs.getString("bhytRegisterPlace"));
                 user.setTuyenDK(rs.getInt("tuyenDK"));
                 user.setRole(rs.getInt("role"));
-                return user;
             }
             System.out.println(sql);
             conn.close();
+            return user;
         } catch (SQLException e) {
            e.printStackTrace(); ;
         }

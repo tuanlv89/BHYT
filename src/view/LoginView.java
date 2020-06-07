@@ -21,19 +21,20 @@ public class LoginView extends javax.swing.JFrame {
     public void checkInfo(){
         if (usernameTextField.getText().equals("")) {
             showMessage("Bạn chưa nhập Username!");
+        } else if (passwordTextField.getText().equals("")) {
+            showMessage("Bạn chưa nhập Password!");
         } else {
-            if (passwordTextField.getText().equals("")) {
-                showMessage("Bạn chưa nhập Password!");
-            } else {
-                String username = usernameTextField.getText();
-                String password = passwordTextField.getText();
+            String username = usernameTextField.getText();
+            String password = passwordTextField.getText();
 
-                UserControl control = new UserControl();
+            UserControl control = new UserControl();
                
-                if (control.checkUser(username, password) == null) {
-                    showMessage("Sai Username hoặc Password!");
-                } else {
-                    User user = control.checkUser(username, password);
+            if (control.checkUser(username, password) == null) {
+                showMessage("Sai Username hoặc Password!");
+            } else {
+                User user = control.checkUser(username, password);
+                System.out.println(user);
+                if(user != null) {
                     HomeView hv = new HomeView(control.getUser(user.getId()));
                     hv.setVisible(true);
                     dispose();
