@@ -6,6 +6,7 @@
 package view;
 
 import DAO.ConfigControl;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Pattern;
@@ -26,8 +27,7 @@ public class AddConfigView extends javax.swing.JFrame {
     private double traiTuyenTuyenHuyen;
     private double traiTuyenTuyenTinh;
     private double traiTuyenTuyenTrungUong;
-    private Date ngayApDung = new Date();
-    
+    Timestamp ngayApDung = new Timestamp(System.currentTimeMillis());
     ConfigControl configControl = new ConfigControl();
     private User user;
     /**
@@ -55,26 +55,14 @@ public class AddConfigView extends javax.swing.JFrame {
         String traiTuyenTuyenTrungUong = jTextField7.getText().trim();
         if(tuoi.equals("") || qlDungTuyen1.equals("") || qlDungTuyen2.equals("") || qlDungTuyen3.equals("")
                 || traiTuyenTuyenHuyen.equals("") || traiTuyenTuyenTinh.equals("") || traiTuyenTuyenTrungUong.equals("")) {
-            JOptionPane.showMessageDialog(
-                    panel, 
-                    "Vui lòng điền đầy đủ thông tin!", 
-                    "Thông báo", 
-                    JOptionPane.INFORMATION_MESSAGE);
+            showMessage("Vui lòng điền đầy đủ thông tin!");
             return false;
         } else if(!isNumeric(tuoi) || !isNumeric(qlDungTuyen1)|| !isNumeric(qlDungTuyen2)|| !isNumeric(qlDungTuyen3)
                 || !isNumeric(traiTuyenTuyenHuyen) || !isNumeric(traiTuyenTuyenTinh) || !isNumeric(traiTuyenTuyenTrungUong)) {
-            JOptionPane.showMessageDialog(
-                    panel, 
-                    "Định dạng không đúng, vui lòng kiểm tra lại!", 
-                    "Thông báo", 
-                    JOptionPane.INFORMATION_MESSAGE);
+            showMessage("Trường bạn nhập không phải là số, vui lòng kiểm tra lại!");
             return false;
         } else if(Integer.parseInt(tuoi) < 0 || Integer.parseInt(tuoi) > 18) {
-            JOptionPane.showMessageDialog(
-                    panel, 
-                    "Tuổi miễn giảm 100% phải nằm trong khoảng từ 0 - 18 tuổi!", 
-                    "Thông báo", 
-                    JOptionPane.INFORMATION_MESSAGE);
+            showMessage("Tuổi miễn giảm 100% phải nằm trong khoảng từ 0 - 18 tuổi!");
             return false;
         } else if (Double.parseDouble(qlDungTuyen1) < 0 || Double.parseDouble(qlDungTuyen1) > 100
                 || Double.parseDouble(qlDungTuyen2) < 0 || Double.parseDouble(qlDungTuyen2) > 100
@@ -82,11 +70,7 @@ public class AddConfigView extends javax.swing.JFrame {
                 || Double.parseDouble(traiTuyenTuyenHuyen) < 0 || Double.parseDouble(traiTuyenTuyenHuyen) > 100
                 || Double.parseDouble(traiTuyenTuyenTinh) < 0 || Double.parseDouble(traiTuyenTuyenTinh) > 100
                 || Double.parseDouble(traiTuyenTuyenTrungUong) < 0 || Double.parseDouble(traiTuyenTuyenTrungUong) > 100) {
-            JOptionPane.showMessageDialog(
-                    panel, 
-                    "Giá trị phải nằm trong khoảng từ 0 - 100%!", 
-                    "Thông báo", 
-                    JOptionPane.INFORMATION_MESSAGE);
+            showMessage("Giá trị phải nằm trong khoảng từ 0 - 100%!");
             return false;
         }
         return true;
@@ -308,28 +292,23 @@ public class AddConfigView extends javax.swing.JFrame {
             "Thông báo", 
             JOptionPane.YES_NO_OPTION);
             if(n == JOptionPane.YES_OPTION) {
-                java.sql.Date dateDB = new java.sql.Date(ngayApDung.getTime());
-                Config config = new Config(tuoi, qlDungTuyen1, qlDungTuyen2, qlDungTuyen3, traiTuyenTuyenHuyen, traiTuyenTuyenTinh, traiTuyenTuyenTrungUong, dateDB);
+                Config config = new Config(tuoi, qlDungTuyen1, qlDungTuyen2, qlDungTuyen3, traiTuyenTuyenHuyen, traiTuyenTuyenTinh, traiTuyenTuyenTrungUong, ngayApDung);
                 System.out.println(config);
                 boolean isSuccess = configControl.insert(config);
                 if(isSuccess) {
-                    JOptionPane.showMessageDialog(
-                    panel, 
-                    "Thêm cấu hình thành công!", 
-                    "Thông báo", 
-                    JOptionPane.INFORMATION_MESSAGE);
+                    showMessage("Thêm cấu hình thành công!");
                 } else {
-                    JOptionPane.showMessageDialog(
-                    panel, 
-                    "Thêm cấu hình không thành công!", 
-                    "Thông báo", 
-                    JOptionPane.INFORMATION_MESSAGE);
+                    showMessage("Thêm cấu hình không thành công!");
                 }
                 new ConfigView(user).setVisible(true);
                 dispose();
             }
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    
+    public void showMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Thông báo", JOptionPane.WARNING_MESSAGE);
+    }
     /**
      * @param args the command line arguments
      */

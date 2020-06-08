@@ -36,7 +36,7 @@ public class ConfigControl {
                 config.setTraiTuyenTuyenHuyen(rs.getDouble("ttTuyenHuyen"));
                 config.setTraiTuyenTuyenTinh(rs.getDouble("ttTuyenTinh"));
                 config.setTraiTuyenTuyenTrungUong(rs.getDouble("ttTuyenTrungUong"));
-                config.setNgayApDung(rs.getDate("ngayApDung"));
+                config.setNgayApDung(rs.getTimestamp("ngayApDung"));
                listConfigs.add(config);
             }
             conn.close();

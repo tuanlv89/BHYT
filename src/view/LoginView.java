@@ -33,18 +33,17 @@ public class LoginView extends javax.swing.JFrame {
                 showMessage("Sai Username hoặc Password!");
             } else {
                 User user = control.checkUser(username, password);
-                System.out.println(user);
-                if(user != null) {
+                if(user.getId() != null) {
                     HomeView hv = new HomeView(control.getUser(user.getId()));
                     hv.setVisible(true);
                     dispose();
-                }
+                } else showMessage("Sai Username hoặc Password!");
             }
         }
     }
     
     public void showMessage(String message) {
-        JOptionPane.showMessageDialog(this, message, "Thong bao", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(this, message, "Thông báo", JOptionPane.WARNING_MESSAGE);
     }
     public LoginView() {
         initComponents();

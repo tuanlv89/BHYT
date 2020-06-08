@@ -79,10 +79,21 @@ public class ConfigView extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Tuổi", "Quyền lợi đúng tuyến 1", "Quyền lợi đúng tuyến 2", "Quyền lợi đúng tuyến 3", "Trái tuyến tuyến huyện", "Trái tuyến tuyến tỉnh", "Trái tuyến tuyến Trung ương", "Ngày áp dụng"
+                "Tuổi", "Đúng tuyến 1", "Đúng tuyến 2", "Đúng tuyến 3", "Trái tuyến huyện", "Trái tuyến tỉnh", "Trái tuyến Trung ương", "Ngày áp dụng"
             }
         ));
+        jTable1.setEnabled(false);
+        jTable1.setFocusable(false);
+        jTable1.setRowSelectionAllowed(false);
         jScrollPane1.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(4).setResizable(false);
+            jTable1.getColumnModel().getColumn(4).setPreferredWidth(100);
+            jTable1.getColumnModel().getColumn(6).setResizable(false);
+            jTable1.getColumnModel().getColumn(6).setPreferredWidth(120);
+            jTable1.getColumnModel().getColumn(7).setResizable(false);
+            jTable1.getColumnModel().getColumn(7).setPreferredWidth(100);
+        }
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Danh sách cấu hình");
@@ -112,12 +123,12 @@ public class ConfigView extends javax.swing.JFrame {
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(50, 50, 50)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton2))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(598, 598, 598)
+                                .addComponent(jButton2)))))
                 .addContainerGap(50, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
