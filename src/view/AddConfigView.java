@@ -35,7 +35,7 @@ public class AddConfigView extends javax.swing.JFrame {
      */
     public AddConfigView(User user) {
         initComponents();
-        // setAlertInvisible();
+        setAlertInvisible();
         this.user = user;
         setTitle("Thêm cấu hình");
         setLocationRelativeTo(this);
@@ -54,23 +54,7 @@ public class AddConfigView extends javax.swing.JFrame {
         String traiTuyenTuyenHuyen = jTextField5.getText().trim();
         String traiTuyenTuyenTinh = jTextField6.getText().trim();
         String traiTuyenTuyenTrungUong = jTextField7.getText().trim();
-        if(checkIsEmpty(tuoi, qlDungTuyen1, qlDungTuyen2, qlDungTuyen3, traiTuyenTuyenHuyen, traiTuyenTuyenTinh, traiTuyenTuyenTrungUong)) {
-            return false;
-        }    
-        if(!isNumeric(tuoi) || !isNumeric(qlDungTuyen1)|| !isNumeric(qlDungTuyen2)|| !isNumeric(qlDungTuyen3)
-                || !isNumeric(traiTuyenTuyenHuyen) || !isNumeric(traiTuyenTuyenTinh) || !isNumeric(traiTuyenTuyenTrungUong)) {
-            showMessage("Trường bạn nhập không phải là số, vui lòng kiểm tra lại!");
-            return false;
-        } else if(Integer.parseInt(tuoi) < 0 || Integer.parseInt(tuoi) > 18) {
-            showMessage("Tuổi miễn giảm 100% phải nằm trong khoảng từ 0 - 18 tuổi!");
-            return false;
-        } else if (Double.parseDouble(qlDungTuyen1) < 0 || Double.parseDouble(qlDungTuyen1) > 100
-                || Double.parseDouble(qlDungTuyen2) < 0 || Double.parseDouble(qlDungTuyen2) > 100
-                || Double.parseDouble(qlDungTuyen3) < 0 || Double.parseDouble(qlDungTuyen3) > 100
-                || Double.parseDouble(traiTuyenTuyenHuyen) < 0 || Double.parseDouble(traiTuyenTuyenHuyen) > 100
-                || Double.parseDouble(traiTuyenTuyenTinh) < 0 || Double.parseDouble(traiTuyenTuyenTinh) > 100
-                || Double.parseDouble(traiTuyenTuyenTrungUong) < 0 || Double.parseDouble(traiTuyenTuyenTrungUong) > 100) {
-            showMessage("Giá trị phải nằm trong khoảng từ 0 - 100%!");
+        if(checkInput(tuoi, qlDungTuyen1, qlDungTuyen2, qlDungTuyen3, traiTuyenTuyenHuyen, traiTuyenTuyenTinh, traiTuyenTuyenTrungUong)) {
             return false;
         } else setAlertInvisible();
         return true;
@@ -105,48 +89,108 @@ public class AddConfigView extends javax.swing.JFrame {
         tvttttu.setVisible(false);
     }
     
-    private boolean checkIsEmpty(String tuoi, String qlDungTuyen1, String qlDungTuyen2, String qlDungTuyen3, String traiTuyenTuyenHuyen, String traiTuyenTuyenTinh, String traiTuyenTuyenTrungUong) {
+    private boolean checkInput(String tuoi, String qlDungTuyen1, String qlDungTuyen2, String qlDungTuyen3, String traiTuyenTuyenHuyen, String traiTuyenTuyenTinh, String traiTuyenTuyenTrungUong) {
         boolean check = false;
-        if(tvqldt2.equals("")) {
-            tvqldt2.setText("Trường thông tin \"quyền lợi đúng tuyến 2\" trống");
-            tvqldt3.setText("Trường thông tin \"quyền lợi đúng tuyến 3\" trống");
-            tvttth.setText("Trường thông tin \"trái tuyến tuyến huyện\" trống");
-            tvtttt.setText("Trường thông tin \"trái tuyến tuyến tỉnh\" trống");
-            tvttttu.setText("Trường thông tin \"trái tuyến tuyến trung ương\" trống");
-            tvqldt2.setVisible(true);
-            check = true;
-            
-            
-            
-        }
         if(tuoi.equals("")) {
             tvTuoi.setText("Trường thông tin \"tuổi\" trống");
             tvTuoi.setVisible(true);
             check = true;
+        } else if(!isNumeric(tuoi)) {
+            tvTuoi.setText("Trường nhập không đúng định dạng số");
+            tvTuoi.setVisible(true);
+            check = true;
+        } else if(Integer.parseInt(tuoi) < 0 || Integer.parseInt(tuoi) > 18) {
+            tvTuoi.setText("Giá trị phải nằm trong khoảng từ 0 - 18 tuổi!");
+            tvTuoi.setVisible(true);
+            check = true;
         }
+        
+        
         if(qlDungTuyen1.equals("")) {
-            tvqldt1.setText("Trường thông tin \"quyền lợi đúng tuyến 1\" trống");
+            tvqldt1.setText("Trường \"quyền lợi đúng tuyến 1\" trống");
+            tvqldt1.setVisible(true);
+            check = true;
+        } else if(!isNumeric(qlDungTuyen1)) {
+            tvqldt1.setText("Trường nhập không đúng định dạng số");
+            tvqldt1.setVisible(true);
+            check = true;
+        } else if(Double.parseDouble(qlDungTuyen1) < 0 || Double.parseDouble(qlDungTuyen1) > 100) {
+            tvqldt1.setText("Giá trị phải nằm trong khoảng từ 0 - 100%!");
             tvqldt1.setVisible(true);
             check = true;
         }
+        
+        
+       if(qlDungTuyen2.equals("")) {
+            tvqldt2.setText("Trường \"quyền lợi đúng tuyến 2\" trống");
+            tvqldt2.setVisible(true);
+            check = true;
+        } else if(!isNumeric(qlDungTuyen2)) {
+            tvqldt2.setText("Trường nhập không đúng định dạng số");
+            tvqldt2.setVisible(true);
+            check = true;
+        } else if(Double.parseDouble(qlDungTuyen2) < 0 || Double.parseDouble(qlDungTuyen2) > 100) {
+            tvqldt2.setText("Giá trị phải nằm trong khoảng từ 0 - 100%!");
+            tvqldt2.setVisible(true);
+            check = true;
+        }
        
-        if(tvqldt3.equals("")) {
+       
+       
+        if(qlDungTuyen3.equals("")) {
             tvqldt3.setText("Trường thông tin \"quyền lợi đúng tuyến 3\" trống");
             tvqldt3.setVisible(true);
             check = true;
+        } else if(!isNumeric(qlDungTuyen3)) {
+            tvqldt3.setText("Trường nhập không đúng định dạng số");
+            tvqldt3.setVisible(true);
+            check = true;
+        } else if(Double.parseDouble(qlDungTuyen3) < 0 || Double.parseDouble(qlDungTuyen3) > 100) {
+            tvqldt3.setText("Giá trị phải nằm trong khoảng từ 0 - 100%!");
+            tvqldt3.setVisible(true);
+            check = true;
         }
-        if(tvttth.equals("")) {
+        
+        
+        if(traiTuyenTuyenHuyen.equals("")) {
             tvttth.setText("Trường thông tin \"trái tuyến tuyến huyện\" trống");
             tvttth.setVisible(true);
             check = true;
+        } else if(!isNumeric(traiTuyenTuyenHuyen)) {
+            tvttth.setText("Trường nhập không đúng định dạng số");
+            tvttth.setVisible(true);
+            check = true;
+        } else if(Double.parseDouble(traiTuyenTuyenHuyen) < 0 || Double.parseDouble(traiTuyenTuyenHuyen) > 100) {
+            tvttth.setText("Giá trị phải nằm trong khoảng từ 0 - 100%!");
+            tvttth.setVisible(true);
+            check = true;
         }
-        if(tvtttt.equals("")) {
+        
+        
+        if(traiTuyenTuyenTinh.equals("")) {
             tvtttt.setText("Trường thông tin \"trái tuyến tuyến tỉnh\" trống");
             tvtttt.setVisible(true);
             check = true;
+        } else if(!isNumeric(traiTuyenTuyenTinh)) {
+            tvtttt.setText("Trường nhập không đúng định dạng số");
+            tvtttt.setVisible(true);
+            check = true;
+        } else if(Double.parseDouble(traiTuyenTuyenTinh) < 0 || Double.parseDouble(traiTuyenTuyenTinh) > 100) {
+            tvtttt.setText("Giá trị phải nằm trong khoảng từ 0 - 100%!");
+            tvtttt.setVisible(true);
+            check = true;
         }
-        if(tvttttu.equals("")) {
+        
+        if(traiTuyenTuyenTrungUong.equals("")) {
             tvttttu.setText("Trường thông tin \"trái tuyến tuyến trung ương\" trống");
+            tvttttu.setVisible(true);
+            check = true;
+        } else if(!isNumeric(traiTuyenTuyenTrungUong)) {
+            tvttttu.setText("Trường nhập không đúng định dạng số");
+            tvttttu.setVisible(true);
+            check = true;
+        } else if(Double.parseDouble(traiTuyenTuyenTrungUong) < 0 || Double.parseDouble(traiTuyenTuyenTrungUong) > 100) {
+            tvttttu.setText("Giá trị phải nằm trong khoảng từ 0 - 100%!");
             tvttttu.setVisible(true);
             check = true;
         }
@@ -217,15 +261,49 @@ public class AddConfigView extends javax.swing.JFrame {
         jTextField1.setAutoscrolls(false);
         jTextField1.setHighlighter(null);
         jTextField1.setMinimumSize(new java.awt.Dimension(110, 20));
+        jTextField1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTextField1MouseClicked(evt);
+            }
+        });
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
             }
         });
 
+        jTextField2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTextField2MouseClicked(evt);
+            }
+        });
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField2ActionPerformed(evt);
+            }
+        });
+
+        jTextField3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTextField3MouseClicked(evt);
+            }
+        });
+
+        jTextField4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTextField4MouseClicked(evt);
+            }
+        });
+
+        jTextField5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTextField5MouseClicked(evt);
+            }
+        });
+
+        jTextField6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTextField6MouseClicked(evt);
             }
         });
 
@@ -238,6 +316,11 @@ public class AddConfigView extends javax.swing.JFrame {
 
         jLabel8.setText("Trái tuyến tuyến trung ương:");
 
+        jTextField7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTextField7MouseClicked(evt);
+            }
+        });
         jTextField7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField7ActionPerformed(evt);
@@ -292,7 +375,7 @@ public class AddConfigView extends javax.swing.JFrame {
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(140, 140, 140)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -303,7 +386,7 @@ public class AddConfigView extends javax.swing.JFrame {
                                 .addComponent(tvqldt1))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(tvqldt2))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -421,6 +504,41 @@ public class AddConfigView extends javax.swing.JFrame {
                 dispose();
             }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTextField1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField1MouseClicked
+        // TODO add your handling code here:
+        setAlertInvisible();
+    }//GEN-LAST:event_jTextField1MouseClicked
+
+    private void jTextField2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField2MouseClicked
+        // TODO add your handling code here:
+        setAlertInvisible();
+    }//GEN-LAST:event_jTextField2MouseClicked
+
+    private void jTextField3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField3MouseClicked
+        // TODO add your handling code here:
+        setAlertInvisible();
+    }//GEN-LAST:event_jTextField3MouseClicked
+
+    private void jTextField4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField4MouseClicked
+        // TODO add your handling code here:
+        setAlertInvisible();
+    }//GEN-LAST:event_jTextField4MouseClicked
+
+    private void jTextField5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField5MouseClicked
+        // TODO add your handling code here:
+        setAlertInvisible();
+    }//GEN-LAST:event_jTextField5MouseClicked
+
+    private void jTextField6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField6MouseClicked
+        // TODO add your handling code here:
+        setAlertInvisible();
+    }//GEN-LAST:event_jTextField6MouseClicked
+
+    private void jTextField7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField7MouseClicked
+        // TODO add your handling code here:
+        setAlertInvisible();
+    }//GEN-LAST:event_jTextField7MouseClicked
 
     
     public void showMessage(String message) {
