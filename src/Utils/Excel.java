@@ -51,7 +51,7 @@ public class Excel {
 
             for (int i = 0; i < histories.size(); i++) {
                 MedicalHistory history = histories.get(i);
-                String benhNhan = history.getDiseaseName();
+                String benhNhan = history.getPatientName();
                 String bacSi = history.getDoctorName();
                 String benhVien = history.getHospitalName();
                 String diaChi = history.getHospitalAddress();

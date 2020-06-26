@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import jxl.write.WriteException;
 import model.Hospital;
@@ -177,8 +178,8 @@ public class MedicalHistoryView extends javax.swing.JFrame {
         Excel excel = new Excel();
         try {
             if(excel.exportHistoriesToExcel("C:\\Users\\Admin\\Desktop\\History.xls", listHistory)) {
-                System.out.println("OK");
-            } else System.out.println("Excel error");
+                showMessageSuccess("Xuất excel thành công. Đường dẫn: C:\\Users\\Admin\\Desktop\\History.xls");
+            } else showMessageError("Có lỗi xảy ra");
         } catch (IOException ex) {
             Logger.getLogger(MedicalHistoryView.class.getName()).log(Level.SEVERE, null, ex);
         } catch (WriteException ex) {
@@ -186,6 +187,12 @@ public class MedicalHistoryView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    public void showMessageSuccess(String message) {
+        JOptionPane.showMessageDialog(this, message, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+    }
+    public void showMessageError(String message) {
+        JOptionPane.showMessageDialog(this, message, "Thông báo", JOptionPane.WARNING_MESSAGE);
+    }
     /**
      * @param args the command line arguments
      */
