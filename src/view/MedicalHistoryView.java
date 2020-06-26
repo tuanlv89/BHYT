@@ -6,9 +6,14 @@
 package view;
 
 import DAO.HistoryControl;
+import Utils.Excel;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
+import jxl.write.WriteException;
 import model.Hospital;
 import model.MedicalHistory;
 import model.User;
@@ -26,7 +31,9 @@ public class MedicalHistoryView extends javax.swing.JFrame {
         this.user = user;
         initComponents();
         model = (DefaultTableModel) jTable1.getModel();
-        listHistory = historyControl.getAllHistory(user.getId());
+        if(user.getRole() == 0) { // 0: admin, 1: user
+            listHistory = historyControl.getAllHistory();
+        } else listHistory = historyControl.getAllHistoryById(user.getId());
         showResult(listHistory);
         setTitle("Lịch sử khám");
         setLocationRelativeTo(this);
@@ -39,7 +46,6 @@ public class MedicalHistoryView extends javax.swing.JFrame {
     }
     
     public void showResult(ArrayList<MedicalHistory> lists) {
-        System.out.println("okok"+lists.size());
         for (MedicalHistory history: lists) {
             model.addRow(new Object[] {
                 history.getPatientName(),
@@ -69,8 +75,9 @@ public class MedicalHistoryView extends javax.swing.JFrame {
         jCheckBox1.setText("jCheckBox1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
         jLabel1.setText("Chi tiết lịch sử khám");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -94,16 +101,20 @@ public class MedicalHistoryView extends javax.swing.JFrame {
         jTable1.setRowSelectionAllowed(false);
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setMinWidth(70);
+            jTable1.getColumnModel().getColumn(0).setResizable(false);
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(95);
             jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setPreferredWidth(110);
+            jTable1.getColumnModel().getColumn(1).setPreferredWidth(115);
             jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setPreferredWidth(110);
+            jTable1.getColumnModel().getColumn(2).setPreferredWidth(115);
             jTable1.getColumnModel().getColumn(3).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setPreferredWidth(110);
+            jTable1.getColumnModel().getColumn(3).setPreferredWidth(115);
             jTable1.getColumnModel().getColumn(4).setMinWidth(50);
             jTable1.getColumnModel().getColumn(6).setMinWidth(70);
-            jTable1.getColumnModel().getColumn(8).setMinWidth(100);
+            jTable1.getColumnModel().getColumn(7).setResizable(false);
+            jTable1.getColumnModel().getColumn(7).setPreferredWidth(80);
+            jTable1.getColumnModel().getColumn(8).setResizable(false);
+            jTable1.getColumnModel().getColumn(8).setPreferredWidth(95);
         }
 
         jButton1.setText("Quay lại");
@@ -133,10 +144,10 @@ public class MedicalHistoryView extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 26, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(382, 382, 382)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(356, 356, 356))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,12 +155,12 @@ public class MedicalHistoryView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         pack();
@@ -163,6 +174,16 @@ public class MedicalHistoryView extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        Excel excel = new Excel();
+        try {
+            if(excel.exportHistoriesToExcel("C:\\Users\\Admin\\Desktop\\History.xls", listHistory)) {
+                System.out.println("OK");
+            } else System.out.println("Excel error");
+        } catch (IOException ex) {
+            Logger.getLogger(MedicalHistoryView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (WriteException ex) {
+            Logger.getLogger(MedicalHistoryView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
