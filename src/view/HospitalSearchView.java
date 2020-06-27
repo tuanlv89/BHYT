@@ -98,6 +98,14 @@ public class HospitalSearchView extends javax.swing.JFrame {
         }
         return mienGiam;
     }
+    
+    public void addMissingInfoIfNeed() {
+        if (jTextField1.getText().trim().equals("")) {
+            jTextField1.setText("0");
+        } else if (jTextField2.getText().trim().equals("")) {
+            jTextField2.setText("100");
+        }
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -330,6 +338,7 @@ public class HospitalSearchView extends javax.swing.JFrame {
                             JOptionPane.INFORMATION_MESSAGE);
                         break;
                     } else {
+                        addMissingInfoIfNeed();
                         ArrayList<Hospital> list = hospitalControl.getHospitalByMienGiam(min, max, listHospitals);
                         showResult(list);
                         break;
