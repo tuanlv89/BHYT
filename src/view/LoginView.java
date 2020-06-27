@@ -51,11 +51,11 @@ public class LoginView extends javax.swing.JFrame {
         setLocationRelativeTo(this);
     } 
     
-    
-    private void goToHomeView() {
-        HomeView frame = new HomeView();
-        frame.setVisible(true);
-        this.setVisible(false);
+    public boolean isInputGreaterThanLimit(String input) {
+        if (input.length() >= 10) {
+            return true;
+        } 
+        return false;
     }
 
     @SuppressWarnings("unchecked")
@@ -148,7 +148,7 @@ public class LoginView extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void usernameTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usernameTextFieldKeyPressed
-        if (usernameTextField.getText().length() == 10) {
+        if (isInputGreaterThanLimit(usernameTextField.getText())) {
             usernameTextField.setText(currentUsername);
         } else {
             currentUsername = usernameTextField.getText();
@@ -157,7 +157,7 @@ public class LoginView extends javax.swing.JFrame {
 
     private void passwordTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordTextFieldKeyPressed
         String passwordText = String.valueOf(passwordTextField.getPassword());
-        if (passwordText.length() == 10) {
+        if (isInputGreaterThanLimit(passwordText)) {
             passwordTextField.setText(currentPassword);
         } else {
             currentPassword = passwordText;

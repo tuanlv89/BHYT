@@ -79,16 +79,15 @@ public class ConfigControl {
         return null;
     }
     
-    public boolean insert(Config config) {
+    public boolean insertNewConfig(Connection conn, Config config) {
         String sql = "INSERT INTO bhyt.cauhinh (idCH, tuoi, quyenLoiDungTuyen1, quyenLoiDungTuyen2, quyenLoiDungTuyen3, ttTuyenHuyen, ttTuyenTinh, ttTuyenTrungUong, ngayApDung)" +
                 " VALUES (null, "+ config.getAge()+ ","+ config.getQuyenLoiDungTuyen1() + ","+ config.getQuyenLoiDungTuyen2() + ","+ config.getQuyenLoiDungTuyen3() +
         ","+ config.getTraiTuyenTuyenHuyen()+ ","+ config.getTraiTuyenTuyenTinh()+ ","+ config.getTraiTuyenTuyenTrungUong()+ ","+ "\""+config.getNgayApDung() + "\""+ ")";
-        Connection conn = conection.getConnection();
+        
         try {
             Statement st = conn.createStatement();
             int rs = st.executeUpdate(sql);
             if(rs > 0) {
-                conn.close();
                 System.out.println(sql);
                 return true;   
             }

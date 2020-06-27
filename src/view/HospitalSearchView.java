@@ -77,7 +77,7 @@ public class HospitalSearchView extends javax.swing.JFrame {
         }
     }
     
-    private double getVienPhiMienGiam(int tuoi, String danToc, boolean thanNhanLietSi, boolean hoNgheo, int tuyenDK, int tuyenBV) {
+    public double getVienPhiMienGiam(int tuoi, String danToc, boolean thanNhanLietSi, boolean hoNgheo, int tuyenDK, int tuyenBV) {
         double mienGiam = 0;
         ConfigControl configControl = new ConfigControl();
         Config currentConfig = configControl.getCurrentConfig();

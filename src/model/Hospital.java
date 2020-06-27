@@ -13,7 +13,6 @@ public class Hospital {
     String id;
     String ten;
     String diaChi;
-    String soDienThoai;
     int tuyen; // 1: TU, 2: Tinh, 3: Huyen, 4: Xa
     String hotline;
     double mienGiam;
@@ -21,11 +20,10 @@ public class Hospital {
     public Hospital() {
     }
 
-    public Hospital(String id, String ten, String diaChi, String soDienThoai, int tuyen, String hotline) {
+    public Hospital(String id, String ten, String diaChi, int tuyen, String hotline) {
         this.id = id;
         this.ten = ten;
         this.diaChi = diaChi;
-        this.soDienThoai = soDienThoai;
         this.tuyen = tuyen;
         this.hotline = hotline;
     }
@@ -53,14 +51,6 @@ public class Hospital {
 
     public void setDiaChi(String diaChi) {
         this.diaChi = diaChi;
-    }
-
-    public String getSoDienThoai() {
-        return soDienThoai;
-    }
-
-    public void setSoDienThoai(String soDienThoai) {
-        this.soDienThoai = soDienThoai;
     }
 
     public int getTuyen() {

@@ -6,9 +6,14 @@
 package view;
 
 import DAO.ConfigControl;
+import DAO.DBConection;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -89,6 +94,21 @@ public class AddConfigView extends javax.swing.JFrame {
         tvttttu.setVisible(false);
     }
     
+    public boolean isTeenagerAge(int age) {
+        if (age < 0 || age > 18) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    public boolean isValidPercentage(double percent) {
+        if (percent < 0 || percent > 100) {
+            return false;
+        }
+        return true;
+    }
+    
     private boolean checkInput(String tuoi, String qlDungTuyen1, String qlDungTuyen2, String qlDungTuyen3, String traiTuyenTuyenHuyen, String traiTuyenTuyenTinh, String traiTuyenTuyenTrungUong) {
         boolean check = false;
         if(tuoi.equals("")) {
@@ -99,7 +119,7 @@ public class AddConfigView extends javax.swing.JFrame {
             tvTuoi.setText("Trường nhập không đúng định dạng số");
             tvTuoi.setVisible(true);
             check = true;
-        } else if(Integer.parseInt(tuoi) < 0 || Integer.parseInt(tuoi) > 18) {
+        } else if(!isTeenagerAge(Integer.parseInt(tuoi))) {
             tvTuoi.setText("Giá trị phải nằm trong khoảng từ 0 - 18 tuổi!");
             tvTuoi.setVisible(true);
             check = true;
@@ -114,7 +134,7 @@ public class AddConfigView extends javax.swing.JFrame {
             tvqldt1.setText("Trường nhập không đúng định dạng số");
             tvqldt1.setVisible(true);
             check = true;
-        } else if(Double.parseDouble(qlDungTuyen1) < 0 || Double.parseDouble(qlDungTuyen1) > 100) {
+        } else if(!isValidPercentage(Double.parseDouble(qlDungTuyen1))) {
             tvqldt1.setText("Giá trị phải nằm trong khoảng từ 0 - 100%!");
             tvqldt1.setVisible(true);
             check = true;
@@ -129,7 +149,7 @@ public class AddConfigView extends javax.swing.JFrame {
             tvqldt2.setText("Trường nhập không đúng định dạng số");
             tvqldt2.setVisible(true);
             check = true;
-        } else if(Double.parseDouble(qlDungTuyen2) < 0 || Double.parseDouble(qlDungTuyen2) > 100) {
+        } else if(!isValidPercentage(Double.parseDouble(qlDungTuyen2))) {
             tvqldt2.setText("Giá trị phải nằm trong khoảng từ 0 - 100%!");
             tvqldt2.setVisible(true);
             check = true;
@@ -145,7 +165,7 @@ public class AddConfigView extends javax.swing.JFrame {
             tvqldt3.setText("Trường nhập không đúng định dạng số");
             tvqldt3.setVisible(true);
             check = true;
-        } else if(Double.parseDouble(qlDungTuyen3) < 0 || Double.parseDouble(qlDungTuyen3) > 100) {
+        } else if(!isValidPercentage(Double.parseDouble(qlDungTuyen3))) {
             tvqldt3.setText("Giá trị phải nằm trong khoảng từ 0 - 100%!");
             tvqldt3.setVisible(true);
             check = true;
@@ -160,7 +180,7 @@ public class AddConfigView extends javax.swing.JFrame {
             tvttth.setText("Trường nhập không đúng định dạng số");
             tvttth.setVisible(true);
             check = true;
-        } else if(Double.parseDouble(traiTuyenTuyenHuyen) < 0 || Double.parseDouble(traiTuyenTuyenHuyen) > 100) {
+        } else if(!isValidPercentage(Double.parseDouble(traiTuyenTuyenHuyen))) {
             tvttth.setText("Giá trị phải nằm trong khoảng từ 0 - 100%!");
             tvttth.setVisible(true);
             check = true;
@@ -175,7 +195,7 @@ public class AddConfigView extends javax.swing.JFrame {
             tvtttt.setText("Trường nhập không đúng định dạng số");
             tvtttt.setVisible(true);
             check = true;
-        } else if(Double.parseDouble(traiTuyenTuyenTinh) < 0 || Double.parseDouble(traiTuyenTuyenTinh) > 100) {
+        } else if(!isValidPercentage(Double.parseDouble(traiTuyenTuyenTinh))) {
             tvtttt.setText("Giá trị phải nằm trong khoảng từ 0 - 100%!");
             tvtttt.setVisible(true);
             check = true;
@@ -189,7 +209,7 @@ public class AddConfigView extends javax.swing.JFrame {
             tvttttu.setText("Trường nhập không đúng định dạng số");
             tvttttu.setVisible(true);
             check = true;
-        } else if(Double.parseDouble(traiTuyenTuyenTrungUong) < 0 || Double.parseDouble(traiTuyenTuyenTrungUong) > 100) {
+        } else if(!isValidPercentage(Double.parseDouble(traiTuyenTuyenTrungUong))) {
             tvttttu.setText("Giá trị phải nằm trong khoảng từ 0 - 100%!");
             tvttttu.setVisible(true);
             check = true;
@@ -494,11 +514,24 @@ public class AddConfigView extends javax.swing.JFrame {
             if(n == JOptionPane.YES_OPTION) {
                 Config config = new Config(tuoi, qlDungTuyen1, qlDungTuyen2, qlDungTuyen3, traiTuyenTuyenHuyen, traiTuyenTuyenTinh, traiTuyenTuyenTrungUong, ngayApDung);
                 System.out.println(config);
-                boolean isSuccess = configControl.insert(config);
+                DBConection conection = new DBConection();
+                Connection conn = conection.getConnection();
+                
+                boolean isSuccess = configControl.insertNewConfig(conn, config);
                 if(isSuccess) {
                     showMessage("Thêm cấu hình thành công!");
+                    try {
+                        conn.close();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(AddConfigView.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 } else {
                     showMessage("Thêm cấu hình không thành công!");
+                    try {
+                        conn.close();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(AddConfigView.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
                 new ConfigView(user).setVisible(true);
                 dispose();
