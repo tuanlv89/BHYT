@@ -38,6 +38,7 @@ public class UserControl {
                 user.setIsPoorFamily(rs.getBoolean("isPoorFamily"));
                 user.setBhytID(rs.getString("bhytID"));
                 user.setBhytRegisterPlace(rs.getString("bhytRegisterPlace"));
+                user.setTuyenDK(rs.getInt("tuyenDK"));
                 user.setRole(rs.getInt("role"));
             }
             conn.close();
