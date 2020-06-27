@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package view;
+import java.awt.Insets;
 import model.User;
 /**
  *
@@ -21,6 +22,7 @@ public class HomeView extends javax.swing.JFrame {
         this.user = user;
         if(user.getRole() == 1) {
             jButton3.setVisible(false);
+            jButton5.setAlignmentX(100);
         } else jButton3.setVisible(true);
         setTitle("Trang chủ");
         setLocationRelativeTo(this);

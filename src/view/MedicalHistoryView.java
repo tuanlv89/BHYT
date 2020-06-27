@@ -8,11 +8,14 @@ package view;
 import DAO.HistoryControl;
 import Utils.Excel;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import jxl.write.WriteException;
 import model.Hospital;
@@ -38,7 +41,11 @@ public class MedicalHistoryView extends javax.swing.JFrame {
         showResult(listHistory);
         setTitle("Lịch sử khám");
         setLocationRelativeTo(this);
-        // TODO: Search and showResult
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );
+         for(int x=0;x<jTable1.getColumnCount();x++){
+            jTable1.getColumnModel().getColumn(x).setCellRenderer( centerRenderer );
+        }
     }
     
     public MedicalHistoryView() {
@@ -47,17 +54,18 @@ public class MedicalHistoryView extends javax.swing.JFrame {
     }
     
     public void showResult(ArrayList<MedicalHistory> lists) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         for (MedicalHistory history: lists) {
             model.addRow(new Object[] {
                 history.getPatientName(),
                 history.getDoctorName(),
                 history.getHospitalName(),
                 history.getHospitalAddress(),
-                history.getDate(),
+                formatter.format(history.getDate()),
                 history.getDiseaseName(), 
                 history.getIsDungTuyen() ? "Đúng tuyến" : "Trái tuyến",
-                history.getTotalMoney(), 
-                history.getPayMoney()
+                history.getTotalMoney()+" VND", 
+                history.getPayMoney()+" VND"
             });
         }
     }
@@ -112,9 +120,7 @@ public class MedicalHistoryView extends javax.swing.JFrame {
             jTable1.getColumnModel().getColumn(3).setPreferredWidth(115);
             jTable1.getColumnModel().getColumn(4).setMinWidth(50);
             jTable1.getColumnModel().getColumn(6).setMinWidth(70);
-            jTable1.getColumnModel().getColumn(7).setResizable(false);
             jTable1.getColumnModel().getColumn(7).setPreferredWidth(80);
-            jTable1.getColumnModel().getColumn(8).setResizable(false);
             jTable1.getColumnModel().getColumn(8).setPreferredWidth(95);
         }
 
@@ -136,19 +142,19 @@ public class MedicalHistoryView extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(442, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(356, 356, 356))
             .addGroup(layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 841, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 26, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(356, 356, 356))
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

@@ -52,7 +52,7 @@ public class LoginView extends javax.swing.JFrame {
     } 
     
     public boolean isInputGreaterThanLimit(String input) {
-        if (input.length() >= 10) {
+        if (input.length() >= 32) {
             return true;
         } 
         return false;

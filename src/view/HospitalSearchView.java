@@ -15,6 +15,8 @@ import java.util.regex.Pattern;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import model.Config;
 import model.Hospital;
@@ -43,6 +45,11 @@ public class HospitalSearchView extends javax.swing.JFrame {
         onShowInputText();
         setTitle("Bệnh viện");
         setLocationRelativeTo(this);
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );
+         for(int x=0;x<jTable1.getColumnCount();x++){
+            jTable1.getColumnModel().getColumn(x).setCellRenderer( centerRenderer );
+        }
 
     }
     
@@ -75,7 +82,7 @@ public class HospitalSearchView extends javax.swing.JFrame {
                     hospital.getDiaChi(), 
                     hospital.getTuyen(), 
                     hospital.getHotline(), 
-                    String.valueOf(mienGiam)
+                    String.valueOf(mienGiam)+"%"
                 });
             }
         }

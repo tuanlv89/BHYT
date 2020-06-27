@@ -8,6 +8,8 @@ package view;
 import DAO.ConfigControl;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import model.Config;
 import model.User;
@@ -35,6 +37,11 @@ public class ConfigView extends javax.swing.JFrame {
         this.user = user;
         model = (DefaultTableModel) jTable1.getModel();
         listConfig = configControl.getAllConfigs();
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );
+         for(int x=0;x<jTable1.getColumnCount();x++){
+            jTable1.getColumnModel().getColumn(x).setCellRenderer( centerRenderer );
+        }
         showResult();
         setTitle("Danh sách cấu hình");
         setLocationRelativeTo(this);
@@ -45,12 +52,12 @@ public class ConfigView extends javax.swing.JFrame {
         for (Config config: listConfig) {
             model.addRow(new Object[] {
                 config.getAge(),
-                config.getQuyenLoiDungTuyen1(),
-                config.getQuyenLoiDungTuyen2(),
-                config.getQuyenLoiDungTuyen3(),
-                config.getTraiTuyenTuyenHuyen(),
-                config.getTraiTuyenTuyenTinh(), 
-                config.getTraiTuyenTuyenTrungUong(),
+                config.getQuyenLoiDungTuyen1()+ "%",
+                config.getQuyenLoiDungTuyen2()+ "%",
+                config.getQuyenLoiDungTuyen3()+ "%",
+                config.getTraiTuyenTuyenHuyen()+ "%",
+                config.getTraiTuyenTuyenTinh()+ "%", 
+                config.getTraiTuyenTuyenTrungUong()+ "%",
                 formatter.format(config.getNgayApDung())
             });
         }
