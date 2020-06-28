@@ -9,10 +9,13 @@ import DAO.ConfigControl;
 import Utils.Utils;
 import DAO.HistoryControl;
 import DAO.HospitalControl;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -50,7 +53,8 @@ public class HospitalSearchView extends javax.swing.JFrame {
          for(int x=0;x<jTable1.getColumnCount();x++){
             jTable1.getColumnModel().getColumn(x).setCellRenderer( centerRenderer );
         }
-
+        limitInput();
+        ((JLabel) selectionComboBox.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
     }
     
     void onShowInputText() {
@@ -67,6 +71,41 @@ public class HospitalSearchView extends javax.swing.JFrame {
             jTextField1.setVisible(false);
             jTextField2.setVisible(false);
             searchTextField.setVisible(true);
+        }
+    }
+    
+    private void limitInput() {
+        int index = selectionComboBox.getSelectedIndex();
+        jTextField1.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (jTextField1.getText().length() >= 5 ) // limit to 5 characters
+                    e.consume();
+            }
+        });
+        jTextField2.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (jTextField2.getText().length() >= 5 ) // limit to 5 characters
+                    e.consume();
+            }
+        });
+        if(index != 2) {
+            searchTextField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (searchTextField.getText().length() >= 50) // limit to 50 characters
+                    e.consume();
+                }
+            });
+        } else {
+            searchTextField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (searchTextField.getText().length() >= 1) // limit to 1 characters
+                    e.consume();
+                }
+            });
         }
     }
     
@@ -142,6 +181,8 @@ public class HospitalSearchView extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(900, 455));
+        setPreferredSize(new java.awt.Dimension(900, 455));
         setResizable(false);
 
         jButton1.setText("Tìm kiếm");
@@ -154,9 +195,23 @@ public class HospitalSearchView extends javax.swing.JFrame {
         jLabel1.setText("Tìm kiếm theo:");
 
         selectionComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Lựa chọn--", "Tên bệnh viện", "Tuyến", "Địa chỉ", "Phần trăm chi trả" }));
+        selectionComboBox.setPreferredSize(new java.awt.Dimension(107, 25));
+        selectionComboBox.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                selectionComboBoxMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                selectionComboBoxMouseReleased(evt);
+            }
+        });
         selectionComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectionComboBoxActionPerformed(evt);
+            }
+        });
+        selectionComboBox.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                selectionComboBoxPropertyChange(evt);
             }
         });
 
@@ -228,80 +283,81 @@ public class HospitalSearchView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 880, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(selectionComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(48, 48, 48)
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(53, 53, 53)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(searchTextField))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel6)
-                                            .addComponent(jLabel7))
-                                        .addGap(46, 46, 46)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel9)
-                                            .addComponent(jLabel8)))
-                                    .addComponent(jLabel5))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(400, 400, 400)
+                        .addComponent(jLabel4))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(392, 392, 392)
-                        .addComponent(jLabel4)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addContainerGap()
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabel1)
+                        .addGap(21, 21, 21)
+                        .addComponent(selectionComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(43, 43, 43)
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabel5))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel7))
+                                .addGap(45, 45, 45)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel9)
+                                    .addComponent(jLabel8))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 870, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
+                .addGap(10, 10, 10)
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(searchTextField)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(selectionComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(22, 22, 22)
+                .addGap(25, 25, 25)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(selectionComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3)))
+                .addGap(15, 15, 15)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(9, 9, 9)
+                .addComponent(jLabel5)
+                .addGap(1, 1, 1)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel6)
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel7))
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel5)
-                        .addGap(8, 8, 8)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel8))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel9))))
-                .addGap(14, 14, 14))
+                        .addComponent(jLabel8)
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel9)))
+                .addContainerGap())
         );
 
         pack();
@@ -321,7 +377,7 @@ public class HospitalSearchView extends javax.swing.JFrame {
                 panel, 
                 "Vui lòng điền thông tin tìm kiếm!", 
                 "Thông báo", 
-                JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.WARNING_MESSAGE);
                 return;
             }
             switch(index) {
@@ -331,12 +387,12 @@ public class HospitalSearchView extends javax.swing.JFrame {
                     break;
                 }
                 case 2: {
-                    if(!isNumeric(search)) {
+                    if(!isNumeric(search) || Integer.parseInt(search) > 4 || Integer.parseInt(search) < 1) {
                         JOptionPane.showMessageDialog(
                         panel, 
                         "Tuyến bệnh viện phải là 1 số từ 1, 2, 3, 4 tương ứng với: Tuyến trung ương, tỉnh, huyện, xã!", 
                         "Thông báo", 
-                        JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.WARNING_MESSAGE);
                         break;
                     }
                     ArrayList<Hospital> list = hospitalControl.getHospitalByTuyen(Integer.parseInt(search));
@@ -356,7 +412,7 @@ public class HospitalSearchView extends javax.swing.JFrame {
                             panel, 
                             "Bạn nhập sai định dạng, vui lòng kiểm tra lại!", 
                             "Thông báo", 
-                            JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.WARNING_MESSAGE);
                         return;
                     } 
                     double min = (toiThieu.equals("")) ? 0 : Double.parseDouble(toiThieu);
@@ -366,28 +422,28 @@ public class HospitalSearchView extends javax.swing.JFrame {
                             panel, 
                             "Vui lòng điền thông tin tìm kiếm!", 
                             "Thông báo", 
-                            JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.WARNING_MESSAGE);
                         break;
-                    } else if (min < 0) {
+                    } else if (min < 0 || min > 100) {
                         JOptionPane.showMessageDialog(
                             panel, 
-                            "Giá trị tối thiểu phải lớn hơn hoặc bằng 0!", 
+                            "Giá trị tối thiểu phải trong khoảng 0 - 100!", 
                             "Thông báo", 
-                            JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.WARNING_MESSAGE);
                         break;
-                    } else if (max > 100) {
+                    } else if (max > 100 || max < 0) {
                         JOptionPane.showMessageDialog(
                             panel, 
-                            "Giá trị tối đa phải nhỏ hơn hoặc bằng 100!", 
+                            "Giá trị tối đa phải trong khoảng 0 - 100!", 
                             "Thông báo", 
-                            JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.WARNING_MESSAGE);
                         break;
                     } else if (min > max) {
                         JOptionPane.showMessageDialog(
                             panel, 
                             "Giá trị tối thiểu phải nhỏ hơn hoặc bằng giá trị tối đa!", 
                             "Thông báo", 
-                            JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.WARNING_MESSAGE);
                         break;
                     } else {
                         addMissingInfoIfNeed();
@@ -418,7 +474,23 @@ public class HospitalSearchView extends javax.swing.JFrame {
     private void selectionComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectionComboBoxActionPerformed
         // TODO add your handling code here
         onShowInputText();
+        jTextField1.setText("");
+        jTextField2.setText("");
+        searchTextField.setText("");
+        limitInput();
     }//GEN-LAST:event_selectionComboBoxActionPerformed
+
+    private void selectionComboBoxPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_selectionComboBoxPropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_selectionComboBoxPropertyChange
+
+    private void selectionComboBoxMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectionComboBoxMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_selectionComboBoxMousePressed
+
+    private void selectionComboBoxMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectionComboBoxMouseReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_selectionComboBoxMouseReleased
 
     
     public static void main(String args[]) {

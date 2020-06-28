@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import model.Config;
 import model.User;
 
@@ -587,6 +588,9 @@ public class AddConfigView extends javax.swing.JFrame {
         getInput();
         
         JPanel panel = (JPanel) getContentPane();
+        UIManager.put("OptionPane.yesButtonText", "Có");
+        UIManager.put("OptionPane.noButtonText", "Không");
+        
         int n = JOptionPane.showConfirmDialog(
             panel, 
             "Bạn có muốn thêm cấu hình này không?", 
@@ -616,7 +620,15 @@ public class AddConfigView extends javax.swing.JFrame {
                 }
                 new ConfigView(user).setVisible(true);
                 dispose();
-            }
+            } else {
+                jTextField1.setText("");
+                jTextField2.setText("");
+                jTextField3.setText("");
+                jTextField4.setText("");
+                jTextField5.setText("");
+                jTextField6.setText("");
+                jTextField7.setText("");
+           }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTextField1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField1MouseClicked
