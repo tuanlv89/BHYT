@@ -39,7 +39,7 @@ public class LoginViewTest {
 
     @Test
     public void testInputGreaterThanLimitCaseTrue() {
-        String input = "abcaaaaaaaa";
+        String input = "abcaaaaaaaaaaaabcaaaaaaaaaaaabcaaaaaaaaaaa";
         
         view.LoginView instance = new view.LoginView();
         boolean expResult = true;

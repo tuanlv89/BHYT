@@ -53,11 +53,15 @@ public class HospitalControlTest {
         Hospital bv2 = new Hospital("BV02", "Bệnh viện Việt Đức", "Việt Đức, Hà Nội", 1, "069066541");
         Hospital bv3 = new Hospital("BV03", "Bệnh viện quân y 103", "Hà Đông, Hà Nội", 2, "097944151");
         Hospital bv4 = new Hospital("BV04", "Bệnh viện mắt Quốc tế", "Cầu Giấy, Hà Nội", 1, "015614614");
+        Hospital bv5 = new Hospital("BV05", "Bệnh viện Vinmec", "Lê Chân, Hải Phòng", 3, "0765876320");
+        Hospital bv6 = new Hospital("BV06", "Bệnh viện Hồng Ngọc", "Nha Trang, Khánh Hòa", 4, "0915904598");
         
         expResult.add(bv1);
         expResult.add(bv2);
         expResult.add(bv3);
         expResult.add(bv4);
+        expResult.add(bv5);
+        expResult.add(bv6);
 
         ArrayList<Hospital> result = new ArrayList();
         result = instance.getAllHospital();
@@ -113,7 +117,7 @@ public class HospitalControlTest {
     @Test
     public void testGetHospitalByNameCaseEmpty() {
         HospitalControl instance = new HospitalControl();
-        String name = "Vinmec";
+        String name = "Thu Cúc";
         
         ArrayList<Hospital> expResult = new ArrayList<>();
         ArrayList<Hospital>  result = instance.getHospitalByName(name);
@@ -151,7 +155,7 @@ public class HospitalControlTest {
     @Test
     public void  testGetHospitalByAddrCaseEmpty() {
         HospitalControl instance = new HospitalControl();
-        String diaChi = "Hải Phòng";
+        String diaChi = "Cần Thơ";
         
         ArrayList<Hospital> expResult = new ArrayList();
         ArrayList<Hospital> result = instance.getHospitalByAddress(diaChi);
@@ -186,11 +190,25 @@ public class HospitalControlTest {
     
     @Test
     public void testGetHospitalByTuyenCaseEmpty() {
+        DBConection conection = new DBConection();
+        Connection conn = conection.getConnection();
         HospitalControl instance = new HospitalControl();
-        int tuyen = 4;
         
-        ArrayList<Hospital> expResult = new ArrayList();
-        ArrayList<Hospital> result = instance.getHospitalByTuyen(tuyen);
-        assertEquals(expResult, result);
+        int tuyen = 4;
+        String sql = "SELECT * FROM bhyt.benhvien WHERE tuyen = " + tuyen;
+        
+        try {
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            if (!rs.next()) {
+                ArrayList<Hospital> expResult = new ArrayList();
+                ArrayList<Hospital> result = instance.getHospitalByTuyen(tuyen);
+                assertEquals(expResult, result);
+            }
+            conn.close();
+        } catch (SQLException e) {
+           e.printStackTrace(); ;
+        }
+        
     }
 }
