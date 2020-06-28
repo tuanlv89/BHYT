@@ -11,6 +11,7 @@ import DAO.HistoryControl;
 import DAO.HospitalControl;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -33,6 +34,13 @@ public class HospitalSearchView extends javax.swing.JFrame {
     private User user;
     HospitalControl hospitalControl = new HospitalControl();
     DefaultTableModel model;
+    KeyListener kl = new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (searchTextField.getText().length() >= 50) // limit to 50 characters
+                    e.consume();
+            }
+        };
     private ArrayList<Hospital> listHospitals = new ArrayList<>();
     public HospitalSearchView() {
         initComponents();
@@ -76,6 +84,7 @@ public class HospitalSearchView extends javax.swing.JFrame {
     
     private void limitInput() {
         int index = selectionComboBox.getSelectedIndex();
+        System.out.println("index"+ index);
         jTextField1.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -90,23 +99,17 @@ public class HospitalSearchView extends javax.swing.JFrame {
                     e.consume();
             }
         });
-        if(index != 2) {
-            searchTextField.addKeyListener(new KeyAdapter() {
+        
+        int maxLength = (index == 2) ? 1 : 50;
+        searchTextField.removeKeyListener(kl);
+        kl = new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
-                if (searchTextField.getText().length() >= 50) // limit to 50 characters
+                if (searchTextField.getText().length() >= maxLength) // limit to 50 characters
                     e.consume();
-                }
-            });
-        } else {
-            searchTextField.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-                if (searchTextField.getText().length() >= 1) // limit to 1 characters
-                    e.consume();
-                }
-            });
-        }
+            }
+        };
+        searchTextField.addKeyListener(kl);
     }
     
     public void showResult(List<Hospital> lists) {
